@@ -18,6 +18,9 @@ app.use(
     })
 );
 
+// Manejar preflight requests para CORS
+app.options("*", cors());
+
 app.get("/", (req, res) => {
     res.json("Hello");
 });
