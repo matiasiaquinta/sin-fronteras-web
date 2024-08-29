@@ -146,12 +146,8 @@ export const verifyToken = async (req, res) => {
 }; */
 
 export const logout = (req, res) => {
-    res.cookie("token", "", {
-        httpOnly: true,
-        secure: true,
-        expires: new Date(0),
-    });
-    return res.sendStatus(200);
+    res.clearCookie("token"); // Elimina la cookie con el nombre "token"
+    res.sendStatus(200); // Responde con un estado 200 (OK)
 };
 
 //export const profile = async (req, res) => {

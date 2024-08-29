@@ -43,29 +43,127 @@ export const getAlumnos = async (req, res) => {
 };
 
 /* Esto me devuelve la información de mi DASHBOARD */
+/* asi esta bien */
 export const getAlumnosStats = async (req, res) => {
     try {
         const alumnos = await Alumno.find();
 
         // Calcular estadísticas
         const totalAlumnos = alumnos.length;
-        const abonaron = alumnos.filter((alumno) => alumno.abono).length;
-        const noAbonaron = totalAlumnos - abonaron;
-
-        // Obtener usuarios que no abonaron
-        const alumnosNoAbonaron = alumnos.filter((alumno) => !alumno.abono);
+        const alumnosAbonaron = alumnos.filter(
+            (alumno) => alumno.abonoEfectivo || alumno.abonoTransferencia
+        );
+        const alumnosNoAbonaron = alumnos.filter(
+            (alumno) => !alumno.abonoEfectivo && !alumno.abonoTransferencia
+        );
 
         res.status(200).json({
             totalAlumnos,
-            abonaron,
-            noAbonaron,
-            alumnosNoAbonaron, // Agregar esto a la respuesta
+            abonaron: alumnosAbonaron.length,
+            noAbonaron: alumnosNoAbonaron.length,
+            alumnosAbonaron, // Para pasar a la página
+            alumnosNoAbonaron, // Para pasar a la página
         });
     } catch (error) {
         console.error("Error al obtener alumnos y estadísticas:", error);
         res.status(500).json({ message: error.message });
     }
 };
+export const getAlumnosasddasStats = async (req, res) => {
+    try {
+        const alumnos = await Alumno.find();
+
+        let abono = false;
+
+        // Calcular estadísticas
+        const totalAlumnos = alumnos.length;
+        console.log("totalAlumnos: ", totalAlumnos);
+
+        // abonoEfectivo=true o abonoTransferencia=true
+        const alumnosStats = alumnos.map((alumno) => {
+            const abonaron = alumno.abonoEfectivo || alumno.abonoTransferencia; // si alguna es true. abono es true
+            const noAbonaron =
+                !alumno.abonoEfectivo && !alumno.abonoTransferencia; // si son false. abono es false
+
+            if (alumno.abonoEfectivo || alumno.abonoTransferencia) {
+                abono = true;
+            } else if (!alumno.abonoEfectivo && !alumno.abonoTransferencia) {
+                abono = false;
+            }
+
+            return {
+                ...alumno,
+                abono,
+            };
+            //console.log("abono ", abono);
+        });
+
+        res.status(200).json({
+            totalAlumnos,
+            alumnos: alumnosStats, // array
+        });
+
+        // abonoEfectivo=false o abonoTransferencia=false
+        //const alumnosNoAbonaron = alumnos.map((alumno) => {
+        //    const noAbonaron = !alumno.abonoEfectivo && !alumno.abonoTransferencia; // si son false. abono es false
+        //    console.log("alumnosNoAbonaron: ", abono);
+        //    return abono;
+        //});
+
+        /* // Determinar cuántos alumnos abonaron y cuántos no
+        const alumnosAbonaron = alumnos.filter(
+            (alumno) => alumno.abonoEfectivo || alumno.abonoTransferencia
+        );
+        const abonaron = alumnosAbonaron.length;
+        const noAbonaron = totalAlumnos - abonaron;
+
+        // Obtener usuarios que abonaron y que no abonaron
+        const alumnosNoAbonaron = alumnos.filter(
+            (alumno) => !alumno.abonoEfectivo && !alumno.abonoTransferencia
+        ); */
+
+        //res.status(200).json({
+        //    totalAlumnos,
+        //    abonaron,
+        //    noAbonaron,
+        //    alumnosNoAbonaron, // Agregar esto a la respuesta
+        //    alumnosAbonaron, // Agregar esto a la respuesta
+        //});
+    } catch (error) {
+        console.error("Error al obtener alumnos y estadísticas:", error);
+        res.status(500).json({ message: error.message });
+    }
+};
+/* con esta logica no funcionaba, porque determinaba .abono y esta mal */
+/* export const getAlumnosStats = async (req, res) => {
+    try {
+        const alumnos = await Alumno.find();
+
+        // Calcular estadísticas
+        const totalAlumnos = alumnos.length;
+        const abonaron = alumnos.filter((alumno) => alumno.abono).length;
+        const noAbonaron = alumnos.filter((alumno) => !alumno.abono).length;
+        //const noAbonaron = totalAlumnos - abonaron;
+
+        // Obtener usuarios que no abonaron
+        const alumnosAbonaron = alumnos.filter((alumno) => alumno.abono);
+        const alumnosNoAbonaron = alumnos.filter((alumno) => !alumno.abono);
+
+        //BORRAR
+        //El problema esta en abono. abonoTransferencia=false abonoEfectivo=false - abono=true. revisar esta logica
+
+        res.status(200).json({
+            totalAlumnos,
+            abonaron,
+            noAbonaron,
+            alumnosNoAbonaron, // Agregar esto a la respuesta
+            alumnosAbonaron, // Agregar esto a la respuesta
+        });
+    } catch (error) {
+        console.error("Error al obtener alumnos y estadísticas:", error);
+        res.status(500).json({ message: error.message });
+    }
+}; */
 
 /*
 export const createAlumno = async (req, res) => {

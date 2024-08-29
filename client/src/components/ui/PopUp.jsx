@@ -87,12 +87,17 @@ export function Popup({ onClose, alumno }) {
         const deporteArray = editedAlumno.deporte;
         const deporteToString = deporteArray.join(", ");
 
+        // Determinar si el alumno abonó
+        const abono =
+            editedAlumno.abonoEfectivo || editedAlumno.abonoTransferencia;
+
         // Creo el objeto actualizado incluyendo variables
         const updatedAlumno = {
             ...editedAlumno,
             deporte: deporteToString,
             abonoEfectivo: editedAlumno.abonoEfectivo,
             abonoTransferencia: editedAlumno.abonoTransferencia,
+            abono,
         };
 
         await updateAlumno(editedAlumno._id, updatedAlumno);

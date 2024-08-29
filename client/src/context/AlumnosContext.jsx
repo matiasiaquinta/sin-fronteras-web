@@ -6,7 +6,8 @@
     los valores sin necesidad de refrescar la pagina, porque recorre y cambia el valor.
     Modificando setAlumnos.
 
-
+    #2 Token / Cookies del frontend:
+    Modifique getAlumnos para que funcionen las cookies.
 */
 
 import { createContext, useContext, useState } from "react";
@@ -31,10 +32,11 @@ export function AlumnoProvider({ children }) {
     const [alumnos, setAlumnos] = useState([]);
     const [pagos, setPagos] = useState([]);
 
-    const getAlumnos = async (alumnos) => {
+    const getAlumnos = async () => {
         try {
-            const res = await getAlumnosRequest(alumnos);
-            setAlumnos(res.data); // Actualiza el estado con los datos recibidos
+            const res = await getAlumnosRequest();
+
+            setAlumnos(res);
         } catch (error) {
             console.error("Error al obtener alumnos:", error);
         }
@@ -43,7 +45,7 @@ export function AlumnoProvider({ children }) {
     const createAlumno = async (alumno) => {
         try {
             const res = await createAlumnoRequest(alumno);
-            //console.log("create", res);
+
             setAlumnos([...alumnos, res]);
         } catch (error) {
             console.error("Error agregando el alumno:", error);
@@ -53,7 +55,7 @@ export function AlumnoProvider({ children }) {
     const deleteAlumno = async (id) => {
         try {
             const res = await deleteAlumnoRequest(id);
-            console.log("delete", res);
+
             if (res.status === 204)
                 setAlumnos(alumnos.filter((alumno) => alumno._id != id));
         } catch (error) {

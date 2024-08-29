@@ -18,7 +18,10 @@ const Home = () => {
 
     const navigate = useNavigate();
 
-    useEffect(() => {
+    // FALTA MEJORAR ESTO Y LISTO
+    // que el navigate me lleve bien - cambiar abono por abonoE y abonoT
+
+    /* useEffect(() => {
         // Función para obtener los datos de la API
         const fetchData = async () => {
             try {
@@ -34,6 +37,44 @@ const Home = () => {
                 setAbonaron(abonaron);
                 setNoAbonaron(noAbonaron);
                 setAlumnosNoAbonaron(alumnosNoAbonaron);
+            } catch (error) {
+                console.error("Error al obtener datos:", error);
+            }
+        };
+
+        fetchData();
+    }, []); */
+
+    useEffect(() => {
+        // Función para obtener los datos de la API
+        const fetchData = async () => {
+            try {
+                const { totalAlumnos, abonaron, noAbonaron } =
+                    await getAlumnosStatsRequest();
+
+                //// Filtrar los alumnos que abonaron y los que no abonaron
+                //const siAbonaron = alumnos.filter(
+                //    (alumno) => alumno.abono === true
+                //);
+                //const noAbonaron = alumnos.filter(
+                //    (alumno) => alumno.abono === false
+                //);
+
+                setTotalAlumnos(totalAlumnos);
+                setAbonaron(abonaron);
+                setNoAbonaron(noAbonaron);
+
+                //if (abono) {
+                //    setAbonaron(abono);
+                //} else {
+                //    setNoAbonaron(abono);
+                //}
+
+                // Actualizar estados
+                //setTotalAlumnos(totalAlumnos);
+                //setAbonaron(abonaron);
+                //setNoAbonaron(noAbonaron);
+                //setAlumnosNoAbonaron(alumnosNoAbonaron);
             } catch (error) {
                 console.error("Error al obtener datos:", error);
             }

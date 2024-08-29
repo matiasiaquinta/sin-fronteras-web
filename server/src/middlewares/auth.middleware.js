@@ -6,7 +6,7 @@ export const auth = (req, res, next) => {
         // Leer el token desde el encabezado Authorization
         const token = req.headers["authorization"]?.split(" ")[1];
 
-        console.log("token auth.middleware: ", token);
+        //console.log("token auth.middleware: ", token);
 
         if (!token) {
             return res
