@@ -3,6 +3,7 @@ import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import "dotenv/config"; // Cargar variables de entorno. No se si hace falta ponerlo aca
+import path from "path";
 
 import authRoutes from "./routes/auth.routes.js";
 import alumnosRoutes from "./routes/alumnos.routes.js";
