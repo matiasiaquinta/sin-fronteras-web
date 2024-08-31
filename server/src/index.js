@@ -1,4 +1,5 @@
 import 'dotenv/config'; // Para cargar la variable del .env
+import path from 'path';
 
 import app from './app.js';
 import { PORT } from './config.js';
@@ -14,7 +15,7 @@ export default async function main() {
       });
     });
     app.get('/*', function (req, res) {
-      res.sendFile(path.join(__dirname, 'server/src/index.js'), function (err) {
+      res.sendFile(path.join(__dirname, 'index.js'), function (err) {
         if (err) {
           res.status(500).send(err);
         }
