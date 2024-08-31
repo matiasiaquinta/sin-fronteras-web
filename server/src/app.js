@@ -26,24 +26,6 @@ app.get("/", (req, res) => {
     res.json("Hello");
 });
 
-// Sirviendo archivos estáticos en producción
-if (process.env.NODE_ENV === "production") {
-    const __dirname = path.resolve(); // Resuelve la ruta absoluta
-    app.use(express.static(path.join(__dirname, "dist"))); // Sirve archivos estáticos del frontend
-
-    // Para todas las rutas que no sean de la API, devuelve el archivo index.html
-    app.get("/*", (req, res) => {
-        res.sendFile(
-            path.join(__dirname, "dist", "index.html"),
-            function (err) {
-                if (err) {
-                    res.status(500).send(err);
-                }
-            }
-        );
-    });
-}
-
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(cookieParser());
