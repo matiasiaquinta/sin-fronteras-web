@@ -84,7 +84,7 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         async function checkLogin() {
             const token = Cookies.get("token"); // Obtener el token de la cookie
-            console.log("token useEfect recargar: ", token);
+            //console.log("token useEfect recargar: ", token);
 
             // Si no hay token, se establece que el usuario no está autenticado
             if (!token) {
@@ -126,6 +126,7 @@ export const AuthProvider = ({ children }) => {
                 signin,
                 logout,
                 loading,
+                setLoading,
                 user,
                 isAuthenticated,
                 errors,
