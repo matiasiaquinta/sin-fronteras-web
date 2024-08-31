@@ -14,7 +14,7 @@ export default async function main() {
       });
     });
     app.get('/*', function (req, res) {
-      res.sendFile(path.join(__dirname, ''), function (err) {
+      res.sendFile(path.join(__dirname, 'server/src/index.js'), function (err) {
         if (err) {
           res.status(500).send(err);
         }
