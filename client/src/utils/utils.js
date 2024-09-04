@@ -13,3 +13,11 @@ export const formatHistorialPagos = pagos => {
   const meses = pagos.map(pago => pago.mes);
   return meses.join(', ');
 };
+
+// Función para normalizar y eliminar tildes
+export const normalizeText = text => {
+  return text
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase();
+};
