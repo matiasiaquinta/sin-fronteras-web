@@ -13,12 +13,12 @@ import { FRONTEND_URL } from './config.js';
 
 const app = express();
 
-// Resolve the directory name in ES modules
-// const __filename = fileURLToPath(import.meta.url);
-// const __dirname = path.dirname(__filename);
+//Resolve the directory name in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-// // Serve static files from the React app's build directory
-// app.use(express.static(path.join(__dirname, 'build')));
+// Serve static files from the React app's build directory
+app.use(express.static(path.join(__dirname, 'build')));
 
 app.use(
   cors({
@@ -37,8 +37,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api', alumnosRoutes);
 app.use('/api', planRoutes);
 
-// app.get('/*', function (req, res) {
-//   res.sendFile(path.join(__dirname, 'build', 'index.html'));
-// });
+app.get('/*', function (req, res) {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
 export default app;
