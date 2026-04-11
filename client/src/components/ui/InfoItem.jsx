@@ -5,11 +5,11 @@
 
 export const InfoItem = ({ label, value }) => {
     return (
-        <div className="flex flex-col items-center w-full">
-            <span className="bg-paleta_1 uppercase font-bold text-sm p-2 text-center text-white w-full md:w-2/3">
+        <div className="flex justify-between items-start py-2.5 border-b border-gray-100 last:border-0">
+            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wide w-2/5 shrink-0">
                 {label}
             </span>
-            <p className="text-black py-4 text-center text-xl w-full border-2 border-gray-500 border-t-0 md:w-2/3">
+            <p className="text-sm text-gray-800 text-right w-3/5">
                 {value}
             </p>
         </div>

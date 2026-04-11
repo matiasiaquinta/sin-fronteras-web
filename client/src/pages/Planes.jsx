@@ -85,140 +85,100 @@ const Planes = () => {
 
     return (
         <Layout>
-            <h1 className="text-2xl uppercase text-center font-bold">Planes</h1>
+            <div className="max-w-xl mx-auto w-full">
+                <div className="flex items-center justify-between mb-4">
+                    <h1 className="text-xl font-bold text-gray-800">Planes</h1>
+                    <button
+                        className="flex items-center gap-2 rounded-lg bg-paleta_2 hover:bg-paleta_1 text-white py-2 px-4 text-sm transition-colors"
+                        onClick={handleOpenCreateModal}
+                    >
+                        <FaPlus />
+                        Crear
+                    </button>
+                </div>
 
-            <hr className="w-52 m-auto border-2 border-paleta_3 mt-2 mb-4" />
-
-            <div className="flex justify-center mb-4">
-                <button
-                    className="flex items-center text-xl rounded bg-paleta_2 text-white py-2 px-6 lg:py-2 lg:px-4"
-                    onClick={handleOpenCreateModal}
-                >
-                    <FaPlus className="mr-4" />
-                    Crear Plan
-                </button>
-            </div>
-
-            {/* Modal para crear plan */}
-            {showCreateModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-                    <div className="relative bg-white p-6 rounded-md w-4/5 max-h-[90vh] overflow-auto">
-                        <button
-                            type="button"
-                            className="absolute top-4 right-4 font-bold rounded-full bg-paleta_3 px-4 py-2"
-                            onClick={handleCloseModal}
-                        >
-                            ✕
-                        </button>
-                        <h2 className="text-xl font-bold text-black text-center mr-6">
-                            Crear Plan
-                        </h2>
-
-                        <form onSubmit={handleSubmit(onSubmit)}>
-                            {/* NOMBRE */}
-                            <div className="mt-4 mb-2">
-                                <label className="font-bold">Nombre:</label>
-                                <Input
-                                    type="text"
-                                    id="nombre"
-                                    name="nombre"
-                                    placeholder="Escribe el nombre del plan"
-                                    {...register("nombre", {
-                                        required: "Nombre es requerido",
-                                    })}
-                                    value={planToCreate.nombre}
-                                    onChange={(e) =>
-                                        setPlanToCreate({
-                                            ...planToCreate,
-                                            nombre: e.target.value,
-                                        })
-                                    }
-                                    className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md"
-                                />
-                                {errors.nombre && (
-                                    <p className="text-red-500">
-                                        {errors.nombre.message}
-                                    </p>
-                                )}
-                            </div>
-                            {/* PRECIO EN EFECTIVO */}
-                            <div className="mb-2">
-                                <label className="font-bold">
-                                    Precio en Efectivo:
-                                </label>
-                                <Input
-                                    type="text"
-                                    id="precioEfectivo"
-                                    name="precioEfectivo"
-                                    placeholder="Escribe el precio en efectivo"
-                                    {...register("precioEfectivo", {
-                                        required:
-                                            "Precio en efectivo es requerido",
-                                        min: {
-                                            value: 0,
-                                            message:
-                                                "El precio debe ser mayor o igual a 0",
-                                        },
-                                    })}
-                                    value={planToCreate.precioEfectivo}
-                                    onChange={handleInputChange}
-                                    className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md"
-                                />
-                                {errors.precioEfectivo && (
-                                    <p className="text-red-500">
-                                        {errors.precioEfectivo.message}
-                                    </p>
-                                )}
-                            </div>
-
-                            {/* PRECIO TRANSFERENCIA */}
-                            <div className="mb-2">
-                                <label className="font-bold">
-                                    Precio Transferencia:
-                                </label>
-                                <Input
-                                    type="text"
-                                    id="precioTransferencia"
-                                    name="precioTransferencia"
-                                    placeholder="Escribe el precio de transferencia"
-                                    {...register("precioTransferencia", {
-                                        required:
-                                            "Precio de transferencia es requerido",
-                                        min: {
-                                            value: 0,
-                                            message:
-                                                "El precio debe ser mayor o igual a 0",
-                                        },
-                                    })}
-                                    value={planToCreate.precioTransferencia}
-                                    onChange={handleInputChange}
-                                    className="w-full bg-zinc-700 text-white px-4 py-2 rounded-md"
-                                />
-                                {errors.precioTransferencia && (
-                                    <p className="text-red-500">
-                                        {errors.precioTransferencia.message}
-                                    </p>
-                                )}
-                            </div>
-
-                            <div className="flex justify-center mt-8">
+                {/* Modal para crear plan */}
+                {showCreateModal && (
+                    <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50 p-4">
+                        <div className="bg-white rounded-2xl w-full max-w-sm shadow-xl overflow-hidden">
+                            <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+                                <h2 className="text-base font-bold text-gray-800">Crear Plan</h2>
                                 <button
-                                    type="submit"
-                                    className="bg-blue-500 text-white px-4 py-2 rounded-md"
+                                    type="button"
+                                    className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 transition-colors"
+                                    onClick={handleCloseModal}
                                 >
-                                    Crear Plan
+                                    ✕
                                 </button>
                             </div>
-                        </form>
-                    </div>
-                </div>
-            )}
 
-            <div className="container mx-auto md:w-1/2">
-                <div className="custom-scrollbar h-[calc(100vh-350px)] overflow-y-scroll overflow-hidden border-2 border-slate-800 rounded-lg">
+                            <form onSubmit={handleSubmit(onSubmit)} className="px-5 py-4">
+                                <div className="mb-3">
+                                    <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Nombre</label>
+                                    <Input
+                                        type="text"
+                                        id="nombre"
+                                        name="nombre"
+                                        placeholder="Nombre del plan"
+                                        {...register("nombre", { required: "Nombre es requerido" })}
+                                        value={planToCreate.nombre}
+                                        onChange={(e) => setPlanToCreate({ ...planToCreate, nombre: e.target.value })}
+                                    />
+                                    {errors.nombre && <p className="text-red-500 text-xs mt-1">{errors.nombre.message}</p>}
+                                </div>
+
+                                <div className="mb-3">
+                                    <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Precio Efectivo</label>
+                                    <Input
+                                        type="text"
+                                        id="precioEfectivo"
+                                        name="precioEfectivo"
+                                        placeholder="0"
+                                        {...register("precioEfectivo", { required: "Requerido" })}
+                                        value={planToCreate.precioEfectivo}
+                                        onChange={handleInputChange}
+                                    />
+                                    {errors.precioEfectivo && <p className="text-red-500 text-xs mt-1">{errors.precioEfectivo.message}</p>}
+                                </div>
+
+                                <div className="mb-4">
+                                    <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Precio Transferencia</label>
+                                    <Input
+                                        type="text"
+                                        id="precioTransferencia"
+                                        name="precioTransferencia"
+                                        placeholder="0"
+                                        {...register("precioTransferencia", { required: "Requerido" })}
+                                        value={planToCreate.precioTransferencia}
+                                        onChange={handleInputChange}
+                                    />
+                                    {errors.precioTransferencia && <p className="text-red-500 text-xs mt-1">{errors.precioTransferencia.message}</p>}
+                                </div>
+
+                                <div className="flex gap-3">
+                                    <button
+                                        type="button"
+                                        className="flex-1 border border-gray-300 text-gray-600 hover:bg-gray-50 py-2 rounded-lg text-sm transition-colors"
+                                        onClick={handleCloseModal}
+                                    >
+                                        Cancelar
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        className="flex-1 bg-paleta_2 hover:bg-paleta_1 text-white py-2 rounded-lg text-sm transition-colors"
+                                    >
+                                        Crear
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                )}
+
+                <div className="pb-4">
                     {planes.length === 0 ? (
-                        <div className="text-center text-gray-500 p-4">
-                            <p>No hay planes, agrega uno nuevo.</p>
+                        <div className="text-center text-gray-400 p-8">
+                            <p>No hay planes. Creá uno nuevo.</p>
                         </div>
                     ) : (
                         planes.map((plan) => (

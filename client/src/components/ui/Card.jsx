@@ -4,29 +4,33 @@ import PropTypes from "prop-types";
 
 export function Card({ alumno }) {
     const [openViewMoreModal, setOpenViewMoreModal] = useState(false);
-    const handleOpenViewMoreModal = () => {
-        setOpenViewMoreModal(true);
-    };
-    const handleCloseViewMoreModal = () => {
-        setOpenViewMoreModal(false);
-    };
+    const isPaid = alumno.abono;
+
     return (
-        <div className="w-[80vw] md:w-auto">
-            <div className="bg-slate-400 rounded-lg p-6 text-center">
-                <h2 className="text-xl font-bold text-gray-800">
-                    {alumno.nombre}
-                </h2>
-                <p className="text-gray-600 mt-4">
-                    Fecha de último pago: {alumno.fechaComienzo}
-                </p>
+        <div className="w-full">
+            <div className={`bg-white rounded-xl shadow-sm border-l-4 ${isPaid ? "border-green-500" : "border-red-400"} p-4`}>
+                <div className="flex justify-between items-start mb-2">
+                    <h2 className="text-base font-bold text-gray-800 leading-snug">
+                        {alumno.nombre}
+                    </h2>
+                    <span className={`text-xs font-semibold px-2 py-0.5 rounded-full whitespace-nowrap ml-2 ${isPaid ? "bg-green-100 text-green-700" : "bg-red-100 text-red-600"}`}>
+                        {isPaid ? "Abonó" : "Debe"}
+                    </span>
+                </div>
+                {alumno.plan && (
+                    <p className="text-xs text-gray-500 mb-0.5">{alumno.plan}</p>
+                )}
+                {alumno.deporte && (
+                    <p className="text-xs text-gray-400">{alumno.deporte}</p>
+                )}
                 <button
-                    className="mt-6 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
-                    onClick={() => handleOpenViewMoreModal(alumno)}
+                    className="mt-3 w-full bg-paleta_2 hover:bg-paleta_1 text-white py-1.5 rounded text-sm transition-colors"
+                    onClick={() => setOpenViewMoreModal(true)}
                 >
                     Ver más
                 </button>
                 {openViewMoreModal && (
-                    <Popup alumno={alumno} onClose={handleCloseViewMoreModal} />
+                    <Popup alumno={alumno} onClose={() => setOpenViewMoreModal(false)} />
                 )}
             </div>
         </div>

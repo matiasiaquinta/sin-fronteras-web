@@ -24,7 +24,7 @@ function App() {
         <AuthProvider>
             <AlumnoProvider>
                 <PlanProvider>
-                    <BrowserRouter>
+                    <BrowserRouter basename="/demos/sinfronteras">
                         {/* <main className="container md:mx-auto md:px-10"> -> esto estaba antes */}
                         <main>
                             {/* navbar */}

@@ -189,65 +189,55 @@ export function Popup({ onClose, alumno }) {
     }
 
     return (
-        <div className="fixed inset-0 bg-black text-black bg-opacity-50 flex justify-center items-center z-50">
-            <div className="relative bg-white p-6 rounded-md w-4/5 h-[80vh] overflow-hidden custom-scrollbar overflow-y-scroll">
-                <button
-                    type="button"
-                    className="absolute top-4 right-4 font-bold rounded-full bg-paleta_3 px-4 py-2"
-                    onClick={handleCloseModal}
-                >
-                    ✕
-                </button>
-                <h2 className="font-bold text-center pr-10 mb-6 md:pr-0 md:text-xl">
-                    Más información del usuario:
-                </h2>
-                <InfoItem label="Nombre" value={alumno.nombre} />
-                <InfoItem label="Mail" value={alumno.mail} />
-                <InfoItem label="Teléfono" value={alumno.telefono} />
-                <InfoItem label="Deporte" value={alumno.deporte} />
-                <InfoItem label="Plan" value={alumno.plan} />
-                <InfoItem
-                    label="Fecha de Comienzo"
-                    value={formatFecha(alumno.fechaComienzo)}
-                />
-                <InfoItem label="Fecha de Pago" value={textoFechaPago} />
-                <InfoItem
-                    label="Precio Efectivo"
-                    value={`$${alumno.precioEfectivo}`}
-                />
-                <InfoItem
-                    label="Precio Transferencia"
-                    value={`$${alumno.precioTransferencia}`}
-                />
-                <InfoItem
-                    label="Abono Efectivo"
-                    value={alumno.abonoEfectivo ? "Sí" : "No"}
-                />
-                <InfoItem
-                    label="Abono Transferencia"
-                    value={alumno.abonoTransferencia ? "Sí" : "No"}
-                />
-                <InfoItem
-                    label="Meses Abonados"
-                    value={formatHistorialPagos(pagos)}
-                />
-                {/* console.log("pagos", pagos) */}
-
-                <div className="flex justify-center mt-4 gap-4 w-full">
+        <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50 p-4">
+            <div className="relative bg-white rounded-2xl w-full max-w-md max-h-[85vh] flex flex-col shadow-xl">
+                {/* Header del popup */}
+                <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+                    <div>
+                        <h2 className="font-bold text-gray-800 text-base">{alumno.nombre}</h2>
+                        <span className={`text-xs font-medium ${alumno.abono ? "text-green-600" : "text-red-500"}`}>
+                            {alumno.abono ? "Abonó este mes" : "Pendiente de pago"}
+                        </span>
+                    </div>
                     <button
-                        className="bg-gray-500 text-white px-4 py-2 rounded-md"
+                        type="button"
+                        className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 transition-colors"
+                        onClick={handleCloseModal}
+                    >
+                        ✕
+                    </button>
+                </div>
+
+                {/* Contenido scrolleable */}
+                <div className="overflow-y-auto custom-scrollbar px-5 py-3 flex-1">
+                    <InfoItem label="Mail" value={alumno.mail} />
+                    <InfoItem label="Teléfono" value={alumno.telefono} />
+                    <InfoItem label="Deporte" value={alumno.deporte} />
+                    <InfoItem label="Plan" value={alumno.plan} />
+                    <InfoItem label="Fecha inicio" value={formatFecha(alumno.fechaComienzo)} />
+                    <InfoItem label="Fecha de pago" value={textoFechaPago} />
+                    <InfoItem label="Precio efectivo" value={`$${alumno.precioEfectivo}`} />
+                    <InfoItem label="Precio transferencia" value={`$${alumno.precioTransferencia}`} />
+                    <InfoItem label="Abonó con" value={alumno.abonoEfectivo ? "Efectivo" : alumno.abonoTransferencia ? "Transferencia" : "No abonó"} />
+                    <InfoItem label="Meses abonados" value={formatHistorialPagos(pagos)} />
+                </div>
+
+                {/* Botones */}
+                <div className="flex gap-3 px-5 py-4 border-t border-gray-100">
+                    <button
+                        className="flex-1 border border-red-300 text-red-500 hover:bg-red-50 py-2 rounded-lg text-sm transition-colors"
                         onClick={() => handleOpenDeleteModal(alumno._id)}
                     >
                         Eliminar
                     </button>
                     <button
-                        className="bg-blue-500 text-white px-4 py-2 rounded-md"
+                        className="flex-1 bg-paleta_2 hover:bg-paleta_1 text-white py-2 rounded-lg text-sm transition-colors"
                         onClick={() => handleOpenEditModal(alumno)}
                     >
                         Editar
                     </button>
                     <button
-                        className="bg-blue-500 text-white px-4 py-2 rounded-md"
+                        className="flex-1 border border-gray-300 text-gray-500 hover:bg-gray-50 py-2 rounded-lg text-sm transition-colors"
                         onClick={() => onClose()}
                     >
                         Cerrar
@@ -256,46 +246,47 @@ export function Popup({ onClose, alumno }) {
             </div>
 
             {showDeleteModal && (
-                <div className="fixed inset-0 text-black bg-black bg-opacity-50 flex justify-center items-center">
-                    <div className="bg-white p-5 rounded-md w-4/5 h-auto">
-                        <h2 className="text-xl text-black text-center">
-                            ¿Seguro que quieres eliminar a{" "}
-                            <span className="font-bold">{alumno.nombre}</span>?
+                <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-60 p-4">
+                    <div className="bg-white rounded-2xl p-6 w-full max-w-sm shadow-xl text-center">
+                        <p className="text-gray-500 text-sm mb-1">Confirmar acción</p>
+                        <h2 className="text-base font-bold text-gray-800 mb-6">
+                            ¿Eliminar a <span className="text-red-500">{alumno.nombre}</span>?
                         </h2>
-                        <div className="flex justify-between items-center m-auto mt-10 w-1/2">
+                        <div className="flex gap-3">
                             <button
-                                className="bg-gray-500 text-white px-4 py-2 rounded-md"
+                                className="flex-1 border border-gray-300 text-gray-600 hover:bg-gray-50 py-2 rounded-lg text-sm transition-colors"
                                 onClick={handleCloseModal}
                             >
-                                No
+                                Cancelar
                             </button>
                             <button
-                                className="bg-blue-500 text-white px-4 py-2 rounded-md"
+                                className="flex-1 bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg text-sm transition-colors"
                                 onClick={handleDelete}
                             >
-                                Sí
+                                Eliminar
                             </button>
                         </div>
                     </div>
                 </div>
             )}
             {showEditModal && (
-                <div className="fixed inset-0 bg-black text-black text-left bg-opacity-50 flex justify-center items-center z-50">
-                    <div className="relative bg-white p-6 rounded-md w-4/5 h-[80vh] overflow-hidden custom-scrollbar overflow-y-scroll">
-                        <button
-                            type="button"
-                            className="absolute top-4 right-4 font-bold rounded-full bg-paleta_3 px-4 py-2"
-                            onClick={handleCloseModal}
-                        >
-                            ✕
-                        </button>
-                        <h2 className="text-xl font-bold text-black text-center mr-6">
-                            Editar alumno
-                        </h2>
+                <div className="fixed inset-0 bg-black/50 text-black flex justify-center items-center z-50 p-4">
+                    <div className="relative bg-white rounded-2xl w-full max-w-md max-h-[85vh] flex flex-col shadow-xl overflow-hidden">
+                        <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+                            <h2 className="text-base font-bold text-gray-800">Editar alumno</h2>
+                            <button
+                                type="button"
+                                className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 transition-colors"
+                                onClick={handleCloseModal}
+                            >
+                                ✕
+                            </button>
+                        </div>
+                        <div className="overflow-y-auto custom-scrollbar px-5 py-3 flex-1">
                         <form onSubmit={handleSubmit}>
                             {/* Nombre */}
                             <div className="mt-4 mb-2">
-                                <label className="font-bold">Nombre:</label>
+                                <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Nombre:</label>
                                 <Input
                                     type="text"
                                     id="nombre"
@@ -313,7 +304,7 @@ export function Popup({ onClose, alumno }) {
 
                             {/* Email */}
                             <div className="mb-2">
-                                <label className="font-bold">Email:</label>
+                                <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Email:</label>
                                 <Input
                                     type="email"
                                     name="mail"
@@ -334,7 +325,7 @@ export function Popup({ onClose, alumno }) {
 
                             {/* Teléfono */}
                             <div className="mb-2">
-                                <label className="font-bold">Teléfono:</label>
+                                <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Teléfono:</label>
                                 <Input
                                     type="tel"
                                     id="telefono"
@@ -356,7 +347,7 @@ export function Popup({ onClose, alumno }) {
 
                             {/* DEPORTE */}
                             <div className="mb-2">
-                                <label className="font-bold">Deporte:</label>
+                                <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Deporte:</label>
                                 <div className="flex justify-center">
                                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 mt-2 text-black">
                                         {deportes.map((deporte) => (
@@ -393,11 +384,11 @@ export function Popup({ onClose, alumno }) {
 
                             {/* Plan */}
                             <div className="mb-2">
-                                <label className="font-bold">Plan:</label>
+                                <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Plan:</label>
                                 <select
                                     value={editedAlumno.plan}
                                     onChange={handlePlanChange}
-                                    className="selectFocus w-full bg-white text-xl text-black border-2 border-slate-800 px-4 py-2 rounded-md"
+                                    className="selectFocus"
                                 >
                                     <option value="">Selecciona un plan</option>
                                     <option value="Plan Natación">
@@ -426,7 +417,7 @@ export function Popup({ onClose, alumno }) {
 
                             {/* Fecha Comienzo */}
                             <div className="mb-2">
-                                <label className="font-bold">
+                                <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
                                     Fecha de Comienzo:
                                 </label>
                                 <Input
@@ -444,7 +435,7 @@ export function Popup({ onClose, alumno }) {
 
                             {/* Selector Fecha Pago */}
                             <div className="mb-2">
-                                <label className="font-bold">
+                                <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
                                     Fecha de Pago:
                                 </label>
                                 <select
@@ -456,7 +447,7 @@ export function Popup({ onClose, alumno }) {
                                             : ""
                                     }
                                     onChange={handleFechaPagoChange}
-                                    className="selectFocus w-full bg-white text-black text-xl border-2 border-slate-800 px-4 py-2 rounded-md"
+                                    className="selectFocus"
                                 >
                                     <option value="">
                                         Selecciona una opción
@@ -489,7 +480,7 @@ export function Popup({ onClose, alumno }) {
                             {/* Campo Extra: Fecha Personalizada */}
                             {mostrarCampoPersonalizado && (
                                 <div className="mb-2">
-                                    <label className="font-bold">
+                                    <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
                                         Fecha Personalizada:
                                     </label>
                                     <Input
@@ -517,7 +508,7 @@ export function Popup({ onClose, alumno }) {
                             {/* Precio */}
                             <div className="mb-2 mt-2">
                                 <div className="mb-2">
-                                    <label className="font-bold ml-6">
+                                    <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
                                         Precio Efectivo:
                                     </label>
                                     <div className="flex items-center">
@@ -536,7 +527,7 @@ export function Popup({ onClose, alumno }) {
                                 </div>
 
                                 <div className="mb-2">
-                                    <label className="font-bold ml-6">
+                                    <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
                                         Precio Transferencia:
                                     </label>
                                     <div className="flex items-center">
@@ -559,7 +550,7 @@ export function Popup({ onClose, alumno }) {
 
                             {/* Abono */}
                             <div className="mt-4 mb-2">
-                                <label className="font-bold">Abono con:</label>
+                                <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Abono con:</label>
                                 <div className="flex justify-center space-x-8 px-2 py-4 border-2 border-black/80 rounded-md">
                                     <div className="flex flex-col items-center">
                                         <div
@@ -624,21 +615,22 @@ export function Popup({ onClose, alumno }) {
                             </div>
 
                             {/* Buttons */}
-                            <div className="flex justify-center items-center gap-8 mt-6">
+                            <div className="flex gap-3 pt-4 pb-2">
                                 <button
                                     onClick={handleCloseModal}
-                                    className="bg-gray-500 text-white px-4 py-2 rounded-md"
+                                    className="flex-1 border border-gray-300 text-gray-600 hover:bg-gray-50 py-2 rounded-lg text-sm transition-colors"
                                 >
                                     Cancelar
                                 </button>
                                 <button
                                     type="submit"
-                                    className="bg-blue-500 text-white px-4 py-2 rounded-md"
+                                    className="flex-1 bg-paleta_2 hover:bg-paleta_1 text-white py-2 rounded-lg text-sm transition-colors"
                                 >
                                     Guardar
                                 </button>
                             </div>
                         </form>
+                        </div>
                     </div>
                 </div>
             )}

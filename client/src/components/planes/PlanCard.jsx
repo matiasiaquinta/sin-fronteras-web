@@ -1,157 +1,137 @@
-import React, { useState } from "react";
-import { FaDollarSign } from "react-icons/fa";
+import { useState } from "react";
 import { usePlan } from "../../context/PlanContext";
 
 const PlanCard = ({ plan }) => {
     const [editMode, setEditMode] = useState(false);
     const [localPlan, setLocalPlan] = useState({ ...plan });
-    const [showConfirmModal, setShowConfirmModal] = useState(false);
-
-    // Estados para eliminar plan
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [planToDelete, setPlanToDelete] = useState(null);
 
-    // Eliminar
     const { deletePlan, updatePlan } = usePlan();
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setLocalPlan((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
+        setLocalPlan((prev) => ({ ...prev, [name]: value }));
     };
 
-    const handleCloseModal = () => {
-        setShowDeleteModal(false);
-        //setShowEditModal(false);
-        setPlanToDelete(null);
-    };
-
-    // -- ELIMINAR -- \\
-    // Abrir modal confirmar eliminar alumno
     const handleOpenDeleteModal = (id) => {
         setPlanToDelete(id);
         setShowDeleteModal(true);
     };
-    // Eliminar alumno confirmado
+
     const handleDelete = () => {
         deletePlan(planToDelete);
         setShowDeleteModal(false);
         setPlanToDelete(null);
     };
 
-    // -- EDITAR -- \\
     const handleCancelEdit = () => {
         setLocalPlan({ ...plan });
         setEditMode(false);
     };
+
     const handleEdit = () => {
         updatePlan(localPlan._id, localPlan);
-        //console.log(localPlan._id, localPlan.precioEfectivo);
         setEditMode(false);
     };
 
-    /*     const handleSave = () => {
-        onUpdate(localPlan);
-        setEditMode(false);
-    }; */
-
     return (
-        <div className="mt-5 mb-6 px-4">
-            <h1 className="text-xl font-bold text-center my-4">
-                {plan.nombre}
-            </h1>
-            <div className="flex items-center mb-2">
-                <label className="w-1/3">Efectivo</label>
-                <FaDollarSign />
-                <input
-                    type="text"
-                    name="precioEfectivo"
-                    value={localPlan.precioEfectivo}
-                    onChange={handleInputChange}
-                    readOnly={!editMode}
-                    className={`w-2/3 border border-gray-300 rounded px-2 py-1 ${
-                        editMode ? "bg-white" : "bg-gray-300"
-                    }`}
-                />
-            </div>
+        <>
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 mb-3">
+                <div className="flex items-center justify-between mb-3">
+                    <h2 className="font-bold text-gray-800 text-sm">{plan.nombre}</h2>
+                    {!editMode && (
+                        <div className="flex gap-2">
+                            <button
+                                className="text-xs border border-red-300 text-red-500 hover:bg-red-50 px-3 py-1 rounded-lg transition-colors"
+                                onClick={() => handleOpenDeleteModal(plan._id)}
+                            >
+                                Eliminar
+                            </button>
+                            <button
+                                className="text-xs bg-paleta_2 hover:bg-paleta_1 text-white px-3 py-1 rounded-lg transition-colors"
+                                onClick={() => setEditMode(true)}
+                            >
+                                Editar
+                            </button>
+                        </div>
+                    )}
+                </div>
 
-            <div className="flex items-center mb-2">
-                <label className="w-1/3">Transferencia</label>
-                <FaDollarSign />
-                <input
-                    type="text"
-                    name="precioTransferencia"
-                    value={localPlan.precioTransferencia}
-                    onChange={handleInputChange}
-                    readOnly={!editMode}
-                    className={`w-2/3 border border-gray-300 rounded px-2 py-1 ${
-                        editMode ? "bg-white" : "bg-gray-300"
-                    }`}
-                />
-            </div>
+                <div className="flex gap-3">
+                    <div className="flex-1 bg-gray-50 rounded-lg p-3">
+                        <p className="text-xs text-gray-400 mb-1">Efectivo</p>
+                        {editMode ? (
+                            <input
+                                type="text"
+                                name="precioEfectivo"
+                                value={localPlan.precioEfectivo}
+                                onChange={handleInputChange}
+                                className="w-full text-sm font-semibold text-gray-800 bg-white border border-gray-200 rounded px-2 py-1 focus:outline-none focus:border-paleta_3"
+                            />
+                        ) : (
+                            <p className="text-sm font-semibold text-gray-800">${plan.precioEfectivo}</p>
+                        )}
+                    </div>
+                    <div className="flex-1 bg-gray-50 rounded-lg p-3">
+                        <p className="text-xs text-gray-400 mb-1">Transferencia</p>
+                        {editMode ? (
+                            <input
+                                type="text"
+                                name="precioTransferencia"
+                                value={localPlan.precioTransferencia}
+                                onChange={handleInputChange}
+                                className="w-full text-sm font-semibold text-gray-800 bg-white border border-gray-200 rounded px-2 py-1 focus:outline-none focus:border-paleta_3"
+                            />
+                        ) : (
+                            <p className="text-sm font-semibold text-gray-800">${plan.precioTransferencia}</p>
+                        )}
+                    </div>
+                </div>
 
-            <div className="flex justify-center mt-4 gap-4 border-b-4 border-gray-600 pb-5">
-                {editMode ? (
-                    <>
+                {editMode && (
+                    <div className="flex gap-3 mt-3">
                         <button
-                            className="bg-gray-500 text-white px-4 py-2 rounded-md"
+                            className="flex-1 border border-gray-300 text-gray-600 hover:bg-gray-50 py-1.5 rounded-lg text-sm transition-colors"
                             onClick={handleCancelEdit}
                         >
                             Cancelar
                         </button>
                         <button
-                            className="bg-blue-500 text-white px-4 py-2 rounded-md"
+                            className="flex-1 bg-paleta_2 hover:bg-paleta_1 text-white py-1.5 rounded-lg text-sm transition-colors"
                             onClick={handleEdit}
                         >
                             Guardar
                         </button>
-                    </>
-                ) : (
-                    <>
-                        <button
-                            className="bg-gray-500 text-white px-4 py-2 rounded-md"
-                            onClick={() => handleOpenDeleteModal(plan._id)}
-                        >
-                            Eliminar
-                        </button>
-                        <button
-                            className="bg-blue-500 text-white px-4 py-2 rounded-md"
-                            onClick={() => setEditMode(true)}
-                        >
-                            Editar
-                        </button>
-                    </>
+                    </div>
                 )}
             </div>
 
-            {/* Modal para confirmar eliminación */}
             {showDeleteModal && (
-                <div className="fixed inset-0 text-black bg-black bg-opacity-50 flex justify-center items-center">
-                    <div className="bg-white p-5 rounded-md w-4/5 h-auto">
-                        <h2 className="text-xl text-black text-center">
-                            ¿Seguro que quieres eliminar a{" "}
-                            <span className="font-bold">{plan.nombre}</span>?
+                <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-50 p-4">
+                    <div className="bg-white rounded-2xl p-6 w-full max-w-sm shadow-xl text-center">
+                        <p className="text-gray-500 text-sm mb-1">Confirmar acción</p>
+                        <h2 className="text-base font-bold text-gray-800 mb-6">
+                            ¿Eliminar <span className="text-red-500">{plan.nombre}</span>?
                         </h2>
-                        <div className="flex justify-between items-center m-auto mt-10 w-1/2">
+                        <div className="flex gap-3">
                             <button
-                                className="bg-gray-500 text-white px-4 py-2 rounded-md"
-                                onClick={handleCloseModal}
+                                className="flex-1 border border-gray-300 text-gray-600 hover:bg-gray-50 py-2 rounded-lg text-sm transition-colors"
+                                onClick={() => { setShowDeleteModal(false); setPlanToDelete(null); }}
                             >
-                                No
+                                Cancelar
                             </button>
                             <button
-                                className="bg-blue-500 text-white px-4 py-2 rounded-md"
+                                className="flex-1 bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg text-sm transition-colors"
                                 onClick={handleDelete}
                             >
-                                Sí
+                                Eliminar
                             </button>
                         </div>
                     </div>
                 </div>
             )}
-        </div>
+        </>
     );
 };
 

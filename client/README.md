@@ -1,8 +1,26 @@
-# React + Vite
+# Sin Fronteras - Client
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Deploy en subcarpeta (Hostinger u otro hosting)
 
-Currently, two official plugins are available:
+Si la app no está en la raíz del dominio sino en una subcarpeta (ej: `/demos/sinfronteras`), hay que configurar dos archivos:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### 1. `vite.config.js`
+```js
+export default defineConfig({
+  plugins: [react()],
+  base: '/demos/sinfronteras/', // <-- ruta de la subcarpeta
+})
+```
+
+### 2. `src/App.jsx`
+```jsx
+<BrowserRouter basename="/demos/sinfronteras"> // <-- misma ruta, sin la barra final
+```
+
+Ambos valores tienen que coincidir con la carpeta real donde se sube el contenido de `dist/`.
+
+Después correr:
+```bash
+npm run build
+```
+Y subir el contenido de `dist/` a `public_html/demos/sinfronteras/`.

@@ -9,13 +9,13 @@ import { useAlumnos } from "../context/AlumnosContext";
 import Layout from "../components/ui/Layout";
 import { FaArrowRight } from "react-icons/fa";
 
-const InfoCard = ({ onClick, count, text }) => (
+const InfoCard = ({ onClick, count, text, accent }) => (
     <div
-        className="bg-paleta_2 my-2 rounded-md shadow-md hover:bg-paleta_1 flex items-center px-4 py-3 lg:py-4"
+        className="bg-white my-2 rounded-xl shadow-sm border border-gray-100 flex items-center px-5 py-4 cursor-pointer hover:shadow-md transition-shadow"
         onClick={onClick}
     >
-        <span className="text-2xl font-bold mr-4">{count}</span>
-        <span>{text}</span>
+        <span className={`text-2xl font-bold mr-4 ${accent || "text-paleta_2"}`}>{count}</span>
+        <span className="text-gray-700">{text}</span>
     </div>
 );
 
@@ -33,49 +33,39 @@ const Home = () => {
 
     return (
         <Layout>
-            <div className="mt-2 text-white md:w-1/2 md:m-auto">
-                <div className="text-center text-xl uppercase text-black block relative w-full before:h-1 before:bg-paleta_3 before:absolute before:w-full before:left-0 before:top-1/2 before:translate-y-1/2 before:z-0">
-                    <span className="text-xl relative z-10 bg-white px-2">
-                        Información
-                    </span>
-                </div>
+            <div className="mt-2 max-w-sm mx-auto w-full">
+                <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-2">Resumen</p>
 
                 <InfoCard
                     onClick={() => navigate("/alumnos")}
                     count={totalAlumnos}
                     text="Alumnos Registrados"
+                    accent="text-paleta_2"
                 />
-
                 <InfoCard
-                    onClick={() =>
-                        navigate("/alumnos", { state: { abono: false } })
-                    }
+                    onClick={() => navigate("/alumnos", { state: { abono: false } })}
                     count={noAbonaron}
                     text="Faltan Abonar"
+                    accent="text-red-500"
                 />
-
                 <InfoCard
-                    onClick={() =>
-                        navigate("/alumnos", { state: { abono: true } })
-                    }
+                    onClick={() => navigate("/alumnos", { state: { abono: true } })}
                     count={abonaron}
                     text="Ya Abonaron"
+                    accent="text-green-600"
                 />
 
-                <div className="mt-6 text-center text-xl uppercase text-black block relative w-full before:h-1 before:bg-paleta_3 before:absolute before:w-full before:left-0 before:top-1/2 before:translate-y-1/2 before:z-0">
-                    <span className="relative z-10 bg-white px-2">Atajos</span>
-                </div>
+                <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mt-6 mb-2">Atajos</p>
 
                 <InfoCard
                     onClick={() => navigate("/alumnos")}
                     text="Crear Alumno"
-                    count={<FaArrowRight className="text-xl" />}
+                    count={<FaArrowRight className="text-paleta_2" />}
                 />
-
                 <InfoCard
                     onClick={() => navigate("/reportes")}
                     text="Ver Reportes"
-                    count={<FaArrowRight className="text-xl" />}
+                    count={<FaArrowRight className="text-paleta_2" />}
                 />
             </div>
         </Layout>

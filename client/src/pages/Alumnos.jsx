@@ -313,40 +313,36 @@ export function Alumnos() {
     return (
         <Layout>
             <div>
-                <div className="container mx-auto text-center">
-                    <h1 className="text-2xl uppercase font-bold">Alumnos</h1>
-                    <hr className="w-52 m-auto border-2 border-paleta_3 mb-4 mt-2" />
-
-                    <div className="flex justify-center">
+                <div className="max-w-3xl mx-auto w-full">
+                    <div className="flex items-center justify-between mb-4">
+                        <div>
+                            <h1 className="text-xl font-bold text-gray-800">Alumnos</h1>
+                            {abono !== null && (
+                                <p className="text-xs text-gray-500">
+                                    {abono === true ? "Que abonaron" : "Que no abonaron"}
+                                </p>
+                            )}
+                        </div>
                         <button
-                            className="flex items-center text-lg rounded bg-paleta_2 text-white py-2 px-6 lg:py-2 lg:px-4"
+                            className="flex items-center gap-2 rounded-lg bg-paleta_2 hover:bg-paleta_1 text-white py-2 px-4 text-sm transition-colors"
                             onClick={handleOpenCreateModal}
                         >
-                            <FaPlus className="mr-4" />
-                            Crear Alumno
+                            <FaPlus />
+                            Crear
                         </button>
                     </div>
 
-                    <div className="container mx-auto">
-                        <input
-                            type="search"
-                            placeholder="Buscar Alumno..."
-                            className="block px-4 py-1 lg:py-2 mt-2 lg:my-4 w-5/6 m-auto rounded-md text-black border-2 border-gray-500"
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                        />
-                        <span className="hidden lg:block mt-2 mb-1 text-center text-2xl font-bold">
-                            {abono === true
-                                ? "Alumnos que abonaron:"
-                                : abono === false
-                                ? "Alumnos que no abonaron:"
-                                : "Alumnos:"}
-                        </span>
-                    </div>
+                    <input
+                        type="search"
+                        placeholder="Buscar alumno..."
+                        className="block px-4 py-2 w-full rounded-lg text-gray-800 border border-gray-200 bg-white focus:outline-none focus:border-paleta_3 mb-4"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                    />
 
-                    <div className="custom-scrollbar flex flex-col items-center h-[calc(100vh-390px)] overflow-y-scroll gap-4 mt-3 overflow-hidden border-2 border-slate-800 rounded-lg md:h-[calc(100vh-480px)] md:grid md:grid-cols-2 lg:grid-cols-3 md:p-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pb-4">
                         {filteredAlumnos.length === 0 ? (
-                            <div className="text-center text-gray-500 p-4">
+                            <div className="text-center text-gray-400 p-8 col-span-3">
                                 <p>No hay alumnos en esta categoría.</p>
                             </div>
                         ) : (
@@ -359,22 +355,23 @@ export function Alumnos() {
 
                 {/* Modal para crear alumno */}
                 {showCreateModal && (
-                    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-                        <div className="relative bg-white p-6 rounded-md w-4/5 h-[80vh] overflow-hidden custom-scrollbar overflow-y-scroll">
-                            <button
-                                type="button"
-                                className="absolute top-4 right-4 font-bold rounded-full bg-paleta_3 px-4 py-2"
-                                onClick={handleCloseModal}
-                            >
-                                ✕
-                            </button>
-                            <h2 className="text-xl font-bold text-black text-center mr-6">
-                                Crear alumno
-                            </h2>
+                    <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50 p-4">
+                        <div className="bg-white rounded-2xl w-full max-w-md max-h-[85vh] flex flex-col shadow-xl overflow-hidden">
+                            <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+                                <h2 className="text-base font-bold text-gray-800">Crear alumno</h2>
+                                <button
+                                    type="button"
+                                    className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 transition-colors"
+                                    onClick={handleCloseModal}
+                                >
+                                    ✕
+                                </button>
+                            </div>
+                            <div className="overflow-y-auto custom-scrollbar px-5 py-3 flex-1">
                             <form onSubmit={handleSubmit(onSubmit)}>
                                 {/* NOMBRE */}
                                 <div className="mt-4 mb-2">
-                                    <label className="font-bold">Nombre:</label>
+                                    <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Nombre:</label>
                                     <Input
                                         type="text"
                                         id="nombre"
@@ -400,7 +397,7 @@ export function Alumnos() {
 
                                 {/* EMAIL */}
                                 <div className="mb-2">
-                                    <label className="font-bold">Email:</label>
+                                    <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Email:</label>
                                     <Input
                                         type="email"
                                         name="mail"
@@ -429,7 +426,7 @@ export function Alumnos() {
 
                                 {/* TELEFONO */}
                                 <div className="mb-2">
-                                    <label className="font-bold">
+                                    <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
                                         Teléfono:
                                     </label>
                                     <Input
@@ -457,7 +454,7 @@ export function Alumnos() {
 
                                 {/* DEPORTE */}
                                 <div className="mb-2">
-                                    <label className="font-bold">
+                                    <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
                                         Deporte:
                                     </label>
                                     <div className="flex justify-center">
@@ -497,7 +494,7 @@ export function Alumnos() {
 
                                 {/* PLAN */}
                                 <div className="mb-2">
-                                    <label className="font-bold">Plan:</label>
+                                    <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Plan:</label>
                                     <select
                                         {...register("plan", {
                                             required:
@@ -505,7 +502,7 @@ export function Alumnos() {
                                         })}
                                         value={alumnoToCreate.plan}
                                         onChange={handlePlanChange}
-                                        className="selectFocus w-full bg-white text-xl text-black border-2 border-slate-800 px-4 py-2 rounded-md"
+                                        className="selectFocus"
                                     >
                                         <option value="">
                                             Selecciona un plan
@@ -538,7 +535,7 @@ export function Alumnos() {
 
                                 {/* FECHA COMIENZO */}
                                 <div className="mb-2">
-                                    <label className="font-bold">
+                                    <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
                                         Fecha de Comienzo:
                                     </label>
                                     <Input
@@ -556,7 +553,7 @@ export function Alumnos() {
 
                                 {/* SELECTOR FECHA PAGO */}
                                 <div className="mb-2">
-                                    <label className="font-bold">
+                                    <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
                                         Fecha de Pago:
                                     </label>
                                     <select
@@ -564,7 +561,7 @@ export function Alumnos() {
                                             required:
                                                 "Selecciona una opción de fecha de pago",
                                         })}
-                                        className="selectFocus w-full bg-white text-xl text-black border-2 border-slate-800 px-4 py-2 rounded-md"
+                                        className="selectFocus"
                                     >
                                         <option value="">
                                             Seleccione una opción
@@ -585,7 +582,7 @@ export function Alumnos() {
                                 {/* CAMPO EXTRA: fecha personalizada */}
                                 {pagoFrecuencia === "personalizado" && (
                                     <div className="mb-2">
-                                        <label className="font-bold">
+                                        <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
                                             Fecha Personalizada:
                                         </label>
                                         <Input
@@ -621,7 +618,7 @@ export function Alumnos() {
                                 {/* PRECIO */}
                                 <div className="mb-2 mt-2">
                                     <div className="mb-2">
-                                        <label className="font-bold ml-6">
+                                        <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
                                             Precio Efectivo:
                                         </label>
                                         <div className="flex items-center">
@@ -654,7 +651,7 @@ export function Alumnos() {
                                         </div>
                                     </div>
                                     <div className="mb-2">
-                                        <label className="font-bold ml-6">
+                                        <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
                                             Precio Transferencia:
                                         </label>
                                         <div className="flex items-center">
@@ -683,7 +680,7 @@ export function Alumnos() {
 
                                 {/* ABONO */}
                                 <div className="mt-4 mb-2">
-                                    <label className="font-bold">
+                                    <label className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
                                         Abono con:
                                     </label>
                                     <div className="flex justify-center space-x-8 px-2 py-4 border-2 border-black/80 rounded-md">
@@ -751,23 +748,23 @@ export function Alumnos() {
                                     </div>
                                 </div>
 
-                                {/*  */}
-                                <div className="flex justify-center items-center gap-8 mt-6">
+                                <div className="flex gap-3 pt-4 pb-2">
                                     <button
                                         type="button"
-                                        className="bg-gray-500 text-white px-4 py-2 rounded-md"
+                                        className="flex-1 border border-gray-300 text-gray-600 hover:bg-gray-50 py-2 rounded-lg text-sm transition-colors"
                                         onClick={handleCloseModal}
                                     >
                                         Cancelar
                                     </button>
                                     <button
                                         type="submit"
-                                        className="bg-blue-500 text-white px-4 py-2 rounded-md"
+                                        className="flex-1 bg-paleta_2 hover:bg-paleta_1 text-white py-2 rounded-lg text-sm transition-colors"
                                     >
                                         Crear
                                     </button>
                                 </div>
                             </form>
+                            </div>
                         </div>
                     </div>
                 )}
